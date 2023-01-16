@@ -44,10 +44,12 @@ public class Graph {
             int nodeIndex = -1; // remapped id
             int edgeIndex = 0;
             int nodeDegree;
+
             while ((line = br.readLine()) != null) {
                 int nodeID = Integer.parseInt(line.split("\\s+")[0]); // origin node of the edge
                 int nodeDestID = Integer.parseInt(line.split("\\s+")[1]); // dest node of the edge
-                if(nodeID != previousID){
+
+                if(nodeID != previousID){ // if new node
                     previousID = nodeID;
                     nodeIndex++;
                     nodeList[nodeIndex] = new Node(nodeIndex, nodeID); // (remapped id, label)
@@ -62,14 +64,16 @@ public class Graph {
                 adjList[edgeIndex] = nodeDestID;
                 edgeIndex++;
             }
+
+            nodeDegree = nodeList[nbNode-1].getDegree(); // compute degree of the last node
+            if(nodeDegree > this.maxDegree)
+                this.maxDegree = nodeDegree;
             br.close();
+
         } catch (IOException e) {
             System.err.format("IOException: %s%n", e);
         }
         
-        int nodeDegree = nodeList[nbNode-1].getDegree(); // compute degree of the last node
-        if(nodeDegree > this.maxDegree)
-            this.maxDegree = nodeDegree;
 
         // // Printing adj list
         // for(int i = 0; i < nbEdge; i++)
