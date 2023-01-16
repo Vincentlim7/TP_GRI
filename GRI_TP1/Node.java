@@ -33,6 +33,11 @@ class Node {
         return this.adjListIndex;
     }
 
+    public void setAdjListIndex(int index){
+        this.adjListIndex = index;
+    }
+
+
     public boolean getVisited(){
         return this.visited;
     }
