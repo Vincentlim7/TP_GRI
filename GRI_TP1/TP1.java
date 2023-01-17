@@ -14,12 +14,13 @@ public class TP1 {
             System.out.println("ERREUR de valeur : nodeID doit être supérieur à 0 et inférieur au nombre de noeud dans le graphe (" + graph.getNbNode() + ")");
             return;
         }
-
-        // System.out.println(graph.getNbNode());
-        // System.out.println(graph.getNbEdge());
-        // System.out.println(graph.getMaxDegree());
-        // System.out.println(); // nb sommet accessible depuis le noeud
-        // System.out.println(); // eccentricité du noeud
+        System.out.println("----------------------------");
+        System.out.println(graph.getNbNode());
+        System.out.println(graph.getNbEdge());
+        System.out.println(graph.getMaxDegree());
+        int[] out = graph.getNB_BFS(1);
+        System.out.println(out[0]); // nb sommet accessible depuis le noeud
+        System.out.println(out[1]); // eccentricité du noeud
         // System.out.println(); // nombre de composantes connexes
     }
 

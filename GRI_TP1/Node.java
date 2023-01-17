@@ -37,7 +37,6 @@ class Node {
         this.adjListIndex = index;
     }
 
-
     public boolean getVisited(){
         return this.visited;
     }

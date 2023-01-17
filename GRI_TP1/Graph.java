@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayDeque;
+
 
 public class Graph {
     private int nbNode; // number of nodes
@@ -96,5 +98,49 @@ public class Graph {
 
     public int getMaxDegree(){
         return this.maxDegree;
+    }
+
+    public int[] getNB_BFS(int label_ori){
+        // System.out.println("label"+nodeList[4].getLabel());
+        // for(int x : adjList){
+        //     System.out.println("*"+x);
+        // }
+        int[] res = new int[2];
+        int nb = 0;
+        int max_dist = 0;
+        ArrayDeque<Integer> f = new ArrayDeque<Integer>();
+        for(Node n:nodeList){
+            if(n.getLabel()==label_ori){
+                f.add(n.getID());
+                nodeList[n.getID()].setVisited();
+                nodeList[n.getID()].setDist(0);
+                nb++;
+                break;
+            }
+        }
+
+        while(!f.isEmpty()){
+            int x = f.poll();
+            for(int i=0;i<nodeList[x].getDegree();i++) {
+                int y = adjList[(nodeList[x].getAdjListIndex()+i)%this.adjList.length];
+                for(Node n:nodeList){
+                    if(n.getLabel()==y){
+                        if(!nodeList[n.getID()].getVisited()){
+                            nodeList[n.getID()].setVisited();
+                            f.add(n.getID());
+                            nodeList[n.getID()].setDist(nodeList[x].getDist()+1);
+                            max_dist = Math.max(max_dist,  nodeList[n.getID()].getDist());
+                            nb++;
+                            break;
+                        }
+                    }
+                }
+
+            }
+        }
+        res[0] = nb;
+        res[1] = max_dist;
+        return res;
+        
     }
 }
