@@ -18,10 +18,10 @@ public class TP1 {
         System.out.println(graph.getNbNode());
         System.out.println(graph.getNbEdge());
         System.out.println(graph.getMaxDegree());
-        int[] out = graph.getNB_BFS(1);
+        int[] out = graph.getNB_BFS(nodeID);
         System.out.println(out[0]); // nb sommet accessible depuis le noeud
         System.out.println(out[1]); // eccentricité du noeud
-        // System.out.println(); // nombre de composantes connexes
+        System.out.println(graph.countComponents()); // nombre de composantes connexes
     }
 
 }

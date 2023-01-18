@@ -141,6 +141,41 @@ public class Graph {
         res[0] = nb;
         res[1] = max_dist;
         return res;
+    }
+
+    public int countComponents() {
         
+        int len = this.nbNode;
+        int count = 0;
+        for (int i = 0; i < len; i++) {
+            nodeList[i].resetVisited();
+        }
+        ArrayDeque<Integer> f = new ArrayDeque<Integer>();
+
+        for (int i = 0; i < len; i++) {
+            if (!nodeList[i].getVisited()) {
+                count++;
+                f.add(i);
+                while(!f.isEmpty()){
+                    int x = f.poll();
+                    for(int j=0;j<nodeList[x].getDegree();j++) {
+                        int y = adjList[(nodeList[x].getAdjListIndex()+j)%this.adjList.length];
+                        for(Node n:nodeList){
+                            if(n.getLabel()==y){
+                                if(!nodeList[n.getID()].getVisited()){
+                                    nodeList[n.getID()].setVisited();
+                                    f.add(n.getID());
+                                    break;
+                                }
+                            }
+                        }
+        
+                    }
+
+
+                }
+            }
+        }
+        return count;
     }
 }

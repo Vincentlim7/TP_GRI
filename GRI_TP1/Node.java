@@ -45,6 +45,9 @@ class Node {
         this.visited = true;
     }
 
+    public void resetVisited(){
+        this.visited = false;
+    }
     public int getDist(){
         return this.dist;
     }
