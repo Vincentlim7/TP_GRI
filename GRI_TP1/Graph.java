@@ -10,6 +10,7 @@ public class Graph {
     private int maxDegree; // max degree
     private Node[] nodeList; // list of nodes
     private int[] adjList; // adjacency list
+    private int[] adjListID; // adjacency list ID
 
     Graph(String fileName){
         nbNode = 0;
@@ -75,6 +76,17 @@ public class Graph {
         } catch (IOException e) {
             System.err.format("IOException: %s%n", e);
         }
+
+        adjListID = new int[nbEdge];
+        for(int i=0; i < nbEdge; i++){
+            for(Node n : nodeList){
+                if(n.getLabel()==adjList[i]){
+                    adjListID[i] = n.getID();
+                    break;
+                }
+            }
+
+        }
         
 
         // // Printing adj list
@@ -122,20 +134,14 @@ public class Graph {
         while(!f.isEmpty()){
             int x = f.poll();
             for(int i=0;i<nodeList[x].getDegree();i++) {
-                int y = adjList[(nodeList[x].getAdjListIndex()+i)%this.adjList.length];
-                for(Node n:nodeList){
-                    if(n.getLabel()==y){
-                        if(!nodeList[n.getID()].getVisited()){
-                            nodeList[n.getID()].setVisited();
-                            f.add(n.getID());
-                            nodeList[n.getID()].setDist(nodeList[x].getDist()+1);
-                            max_dist = Math.max(max_dist,  nodeList[n.getID()].getDist());
-                            nb++;
-                            break;
-                        }
-                    }
+                int y = adjListID[(nodeList[x].getAdjListIndex()+i)%this.adjList.length];
+                if(!nodeList[y].getVisited()){
+                    nodeList[y].setVisited();
+                    f.add(y);
+                    nodeList[y].setDist(nodeList[x].getDist()+1);
+                    max_dist = Math.max(max_dist,  nodeList[y].getDist());
+                    nb++;
                 }
-
             }
         }
         res[0] = nb;
@@ -159,17 +165,12 @@ public class Graph {
                 while(!f.isEmpty()){
                     int x = f.poll();
                     for(int j=0;j<nodeList[x].getDegree();j++) {
-                        int y = adjList[(nodeList[x].getAdjListIndex()+j)%this.adjList.length];
-                        for(Node n:nodeList){
-                            if(n.getLabel()==y){
-                                if(!nodeList[n.getID()].getVisited()){
-                                    nodeList[n.getID()].setVisited();
-                                    f.add(n.getID());
-                                    break;
-                                }
-                            }
+                        int y = adjListID[(nodeList[x].getAdjListIndex()+j)%this.adjList.length];
+                        if(!nodeList[y].getVisited()){
+                            nodeList[y].setVisited();
+                            f.add(y);
+                            break;
                         }
-        
                     }
 
 
