@@ -156,6 +156,7 @@ public class Graph {
         for (int i = 0; i < len; i++) {
             nodeList[i].resetVisited();
         }
+
         ArrayDeque<Integer> f = new ArrayDeque<Integer>();
 
         for (int i = 0; i < len; i++) {
@@ -169,7 +170,6 @@ public class Graph {
                         if(!nodeList[y].getVisited()){
                             nodeList[y].setVisited();
                             f.add(y);
-                            break;
                         }
                     }
 
