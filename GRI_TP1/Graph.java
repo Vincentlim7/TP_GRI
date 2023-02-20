@@ -89,6 +89,7 @@ public class Graph {
                         chiffres = false; 
                         // on assume que a a été mis dans la HashMap a l'étape 1
                         x = (int) idMapping.get(a); // son numero est x
+
                         if(x!=lastX) // on a changé de sommet ?
                         {								    
                             if(nodeList[x].isDone()) // zut c'est la deuxieme fois qu'on voit x comme origine d'un arc
@@ -98,6 +99,8 @@ public class Graph {
                             }
                             else
                             nodeList[x].changeDone();
+                            nodeList[x].setLabel(a);
+                            nodeList[x].setID(x);
                         }
                         lastX = x;
                         nodeList[x].incOutDegree();
