@@ -11,10 +11,11 @@ public class TP2 {
         Graph graph = new Graph(fileName);
 
         String option = args[0];
-        System.out.println("----------------------------");
+        
         if (option.equals("-b")) {
-            System.out.println("option -b: " + graph.calculateBetweennessCentrality(nodeLabel));
+            System.out.println(graph.calculateBetweennessCentrality(nodeLabel));
         } else if (option.equals("-c")) {
+            System.out.println(graph.computeCardiality(nodeLabel));
         } else {
             System.out.println("Invalid option: " + option);
             System.exit(1);

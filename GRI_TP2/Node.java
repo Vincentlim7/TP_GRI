@@ -8,12 +8,14 @@ class Node {
     private int dist; // distance to the considered node
     private boolean done;
     public int npcc;
+    private boolean deleted;
 
     public Node(){
         this.inDegree = 0;
         this.outDegree = 0;
         this.visited = false;
         this.done = false;
+        this.deleted = false;
     }
     
     public Node(int id, int label){
@@ -23,6 +25,7 @@ class Node {
         this.outDegree = 0;
         this.visited = false;
         this.done = false;
+        this.deleted = false;
     }
 
     public void setID(int id){
@@ -47,6 +50,10 @@ class Node {
 
     public void incInDegree(){
         this.inDegree++;
+    }
+
+    public void decInDegree(){
+        this.inDegree--;
     }
 
     public int getOutDegree(){
@@ -90,5 +97,13 @@ class Node {
 
     public void changeDone(){
         this.done = !this.done;
+    }
+
+    public boolean isDeleted(){
+        return this.deleted;
+    }
+
+    public void setDeleted(){
+        this.deleted = true;
     }
 } 

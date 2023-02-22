@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 // import java.util.ArrayList;
 import java.util.HashMap;
 // import java.util.LinkedList;
@@ -13,14 +14,16 @@ import java.util.Map;
 public class Graph {
     private int nbNode; // number of nodes
     private int nbEdge; // number of edges
-    private int maxDegree; // max degree
+    private int maxOutDegree; // max degree
+    private int maxInDegree;
     private Node[] nodeList; // list of nodes
     private int[] adjList; // adjacency list ID
 
     Graph(String fileName){
         nbNode = 0;
         nbEdge = 0;
-        maxDegree = 0;
+        maxOutDegree = 0;
+        maxInDegree = 0;
         
         Map<Integer, Integer> idMapping = new HashMap<>(); // map to remap node id from adjList to adjList
 
@@ -107,11 +110,11 @@ public class Graph {
                         }
                         lastX = x;
                         nodeList[x].incOutDegree();
-                        if(maxDegree < nodeList[x].getOutDegree())
-                        maxDegree = nodeList[x].getOutDegree();
+                        if(maxOutDegree < nodeList[x].getOutDegree())
+                            maxOutDegree = nodeList[x].getOutDegree();
                         nodeList[x].setLabel(a);
                         if(nodeList[x].getAdjListIndex()==0 && x>0 ) // ce sommet n'a pas encore sont debutAdj
-                        nodeList[x].setAdjListIndex(posAdj);
+                            nodeList[x].setAdjListIndex(posAdj);
                     }
                         
                     a=0;
@@ -122,6 +125,9 @@ public class Graph {
                 }
             y = (int) idMapping.get(a); // on vient de lire l'extremite de l'arete
             nodeList[y].setLabel(a);
+            nodeList[y].incInDegree();
+            if(maxInDegree < nodeList[y].getInDegree())
+                maxInDegree = nodeList[y].getInDegree();
             adjList[posAdj++] = y; // on l'insere dans la liste d'adj
     
               }
@@ -140,8 +146,12 @@ public class Graph {
         return this.nbEdge;
     }
 
-    public int getMaxDegree(){
-        return this.maxDegree;
+    public int getMaxOutDegree(){
+        return this.maxOutDegree;
+    }
+
+    public int getMaxInDegree(){
+        return this.maxInDegree;
     }
 
     public int[] getNB_BFS(int label_ori){
@@ -234,6 +244,101 @@ public class Graph {
             }
         }
     }
+    public int computeCardiality(int nodeLabel){
+        int k = 1;
+        ArrayDeque<Node> f = new ArrayDeque<Node>();
+        // Populate every inDegree list
+
+        // System.out.println(inDegreeMapping);
+        
+        outerloop:
+        while(true){
+            // System.out.println("****************");
+            // System.out.println("Value of k : " + k);
+            for (Node node : nodeList){
+                if(!node.isDeleted() && node.getInDegree() == k-1){
+                    f.push(node);
+                    // System.out.println(node.getLabel());
+                }
+            }
+            // System.out.println("****************");
+            while(!f.isEmpty()){
+                Node x = f.poll();
+                // System.out.println("------------");
+                // System.out.println("x pulled : " + x.getLabel());
+                if(x.getLabel() == nodeLabel)
+                    break outerloop;
+                x.setDeleted();
+                int index = x.getAdjListIndex(); // retrieving x's index in adjList and outDegree to get all y node with (x, y) edge
+                int outDegree = x.getOutDegree();
+                for(int j = index; j < index + outDegree; j++){
+                    Node y = nodeList[adjList[j]]; // this is node y
+                    if(y.isDeleted())
+                        continue;
+                    // System.out.println("y : " + y.getLabel());
+                    // System.out.println(adjList[j] + " has degree : " + targetNode.getInDegree());
+                    y.decInDegree();
+                    if(y.getInDegree() < k && !f.contains(y))
+                        f.push(y);
+                }
+            }
+            k++;
+        }
+        return k-1;
+    }
+
+
+    // public int computeCardiality(int nodeLabel){
+    //     Map<Integer, ArrayDeque<Integer>> inDegreeMapping = new HashMap<>();
+    //     // Create every list of node of inDegree i
+    //     for(int i=0; i <= this.maxInDegree; i++){
+    //         if(inDegreeMapping.get(i) == null)
+    //             inDegreeMapping.put(i, new ArrayDeque<Integer>());
+    //     }
+
+    //     // Populate every inDegree list
+    //     for (Node node : nodeList){
+    //         int degree = node.getInDegree();
+    //         inDegreeMapping.get(degree).add(node.getID());
+    //     }
+    //     // System.out.println(inDegreeMapping);
+    //     int k = 0;
+    //     outerloop:
+    //     while(true){
+    //         System.out.println("value of k : " + k);
+    //         for(int i = 0; i < k; i++){
+    //             ArrayDeque<Integer> idNodeK = inDegreeMapping.get(i);
+    //             System.out.println("value of degree examined : " + i);
+    //             System.out.println(idNodeK);
+    //             for (Integer id : idNodeK){
+    //                 Node node = nodeList[id];
+    //                 if(node.isDeleted())
+    //                     continue;
+    //                 if(node.getLabel() == nodeLabel)
+    //                     break outerloop;
+    //                 node.setDeleted();
+    //                 int index = node.getAdjListIndex(); // retrieving x's index in adjList and outDegree to get all y node with (x, y) edge
+    //                 int outDegree = node.getOutDegree();
+    //                 System.out.println("----- x is : " + id);
+    //                 for(int j = index; j < index + outDegree; j++){
+    //                     Node targetNode = nodeList[adjList[j]]; // this is node y
+    //                     // System.out.println(adjList[j] + " has degree : " + targetNode.getInDegree());
+    //                     System.out.println("y is " + adjList[j] + " degree is " + targetNode.getInDegree());
+    //                     System.out.println("Before : " + inDegreeMapping.get(targetNode.getInDegree()));
+    //                     inDegreeMapping.get(targetNode.getInDegree()).remove(targetNode.getID()); // removing node id from his previous degree list
+    //                     System.out.println("After : " + inDegreeMapping.get(targetNode.getInDegree()));
+    //                     targetNode.decInDegree();
+    //                     if(targetNode.getInDegree() >= 0)
+    //                         inDegreeMapping.get(targetNode.getInDegree()).add(targetNode.getID()); // add to its new degree list
+    //                 }
+    //             }
+    //         }
+    //         k++;
+    //     }
+    //     return k-1;
+    // }
+
+
     public double calculateBetweennessCentrality(int v_label) {
         double betweenness = 0.0;
         int v = -1;
