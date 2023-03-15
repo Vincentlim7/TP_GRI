@@ -20,9 +20,9 @@ public class TP3 {
         
         if (option.equals("-w")) {
 
-            System.out.println(graph.calculateBetweennessCentrality(nodeLabel));
+            // System.out.println(graph.calculateBetweennessCentrality(nodeLabel));
         } else if (option.equals("-k")) {
-            KleinbergGraph graph = new KleinbergGraph(output, arg2);
+            new KleinbergGraph(output, arg2, arg3, arg4, arg5, arg6);
         } else {
             System.out.println("Invalid option: " + option);
             System.exit(1);
