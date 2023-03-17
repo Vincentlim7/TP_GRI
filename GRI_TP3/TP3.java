@@ -19,7 +19,7 @@ public class TP3 {
         String arg6 = args[6];      // either cible or cible_y
         
         if (option.equals("-w")) {
-
+            new WattsStrogatzGraph(output, arg2, arg3, arg4, arg5, arg6);
             // System.out.println(graph.calculateBetweennessCentrality(nodeLabel));
         } else if (option.equals("-k")) {
             new KleinbergGraph(output, arg2, arg3, arg4, arg5, arg6);
