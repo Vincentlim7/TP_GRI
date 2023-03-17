@@ -19,20 +19,18 @@ public class WattsStrogatzGraph{
     boolean flag = false;
 
     
-    public WattsStrogatzGraph(String output, String n_, String k_, String p_, String ori, String cib){
+    public WattsStrogatzGraph(String output, int n_, int k_, double p_, int ori, int cib){
         this.routage = new ArrayList<>();
         this.nodeList = new ArrayList<Node>(); 
         this.adjList = new HashMap<Integer, ArrayList<Integer>>();
         this.RebrancheList = new HashMap<Integer, ArrayList<Integer>>();
-        try{
-            this.n = Integer.parseInt(n_);
-            this.k = Integer.parseInt(k_);
-            this.p = Double.parseDouble(p_);
-            this.origine = Integer.parseInt(ori);
-            this.cible= Integer.parseInt(cib);
-        } catch (NumberFormatException e){
-            System.err.println("grid size or one of the nodes' coordinates value is not a number");
-        }
+
+        this.n = n_;
+        this.k = k_;
+        this.p = p_;
+        this.origine = ori;
+        this.cible= cib;
+
 
         // Create all nodes
         int id = 0; 

@@ -21,19 +21,17 @@ public class KleinbergGraph {
     Map<Integer, ArrayList<Integer>> adjList; // adjacency list ID
     private int n, x1, y1, x2, y2;
 
-    KleinbergGraph(String output, String c, String origine_x, String origine_y, String cible_x, String cible_y){
+    KleinbergGraph(String output, int c, int origine_x, int origine_y, int cible_x, int cible_y){
         int id = 0; // node id from 0 to nbNode^2 excluded
         this.nodeList = new ArrayList<Node>();
         this.adjList = new HashMap<Integer, ArrayList<Integer>>();
-        try{
-            this.n = Integer.parseInt(c);
-            this.x1 = Integer.parseInt(origine_x);
-            this.y1 = Integer.parseInt(origine_y);
-            this.x2 = Integer.parseInt(cible_x);
-            this.y2= Integer.parseInt(cible_y);
-        } catch (NumberFormatException e){
-            System.err.println("grid size or one of the nodes' coordinates value is not a number");
-        }
+
+        this.n = c;
+        this.x1 = origine_x;
+        this.y1 = origine_y;
+        this.x2 = cible_x;
+        this.y2= cible_y;
+
 
         // Create all nodes
         for (int x = 0; x < this.n; x++){
